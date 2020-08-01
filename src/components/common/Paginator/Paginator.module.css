@@ -1,3 +1,14 @@
+.paginator{
+    margin: 10px 5% ;
+    display:grid;
+    grid-template-columns: repeat(12, 1fr);
+}
+.paginator > span {
+    border: 1px solid black;
+    text-align: center;
+}
 .selectedPage {
+    background: aqua;
     font-weight: bold;
+    color:white;
 }
