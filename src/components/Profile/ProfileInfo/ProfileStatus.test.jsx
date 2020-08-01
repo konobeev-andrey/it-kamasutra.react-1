@@ -12,12 +12,35 @@ describe('ProfileStatus component', () =>{
         const component = create(<ProfileStatus status={'it-kamasutra.com'}/>);
         const root = component.root;
         const span = root.findByType('span')
-        expect(span.props.length).toBe(1);
+        expect(span).not.toBeNull();
+    })
+    test('after creation input should`t be displayed', () => {
+        const component = create(<ProfileStatus status={'it-kamasutra.com'}/>);
+        const root = component.root;
+        expect( () => {
+            const input = root.findByType('input')
+        }).toThrow();
     })
     test('after creation span should contains correct status', () => {
         const component = create(<ProfileStatus status={'it-kamasutra.com'}/>);
         const root = component.root;
         const span = root.findByType('span')
         expect(span.children[0]).toBe('it-kamasutra.com');
+    })
+    test('input should be displayed in editMode instead of span', () => {
+        const component = create(<ProfileStatus status={'it-kamasutra.com'}/>);
+        const root = component.root;
+        const span = root.findByType('span')
+        span.props.onDoubleClick()
+        const input = root.findByType('input')
+        input.props.value
+        expect(input.props.value).toBe('it-kamasutra.com');
+    })
+    test('callback should be called', () => {
+        const mockCallback = jest.fn()
+        const component = create(<ProfileStatus status={'it-kamasutra.com'} updateStatus={mockCallback}/>);
+        const instance = component.getInstance();
+        instance.deactivateEditMode()
+        expect(mockCallback.mock.calls.length).toBe(1);
     })
 })
