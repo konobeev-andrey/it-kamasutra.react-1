@@ -28,6 +28,15 @@ export const profileApi = {
     },
     updateStatus(status){
         return  instansce.put(`profile/status`, {status: status}).then(resp => resp.data)
+    },
+    savePhoto(photoFile){
+        let formData = new FormData();
+        formData.append('image', photoFile)
+        return  instansce.put(`profile/photo`, formData, {
+            headers:{
+                    'Content-type': 'multipart/form-data'
+            }
+        }).then(resp => resp.data)
     }
 }
 export const authApi = {

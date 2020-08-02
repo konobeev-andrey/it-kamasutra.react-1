@@ -2,7 +2,6 @@ import React from "react";
 import style from "./users.module.css";
 import usersPhoto from '../../asseds/imeges/user-avatar-png-7-original.png'
 import {NavLink} from "react-router-dom";
-import Paginator from "../common/Paginator/Paginator";
 
 const Users = ({user, followingInProgress,unFollow,follow}) => {
 
