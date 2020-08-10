@@ -1,4 +1,5 @@
 import {profileApi} from "../api/api";
+import {stopSubmit} from "redux-form";
 
 const ADD_POST = 'ADD_POST';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
@@ -56,29 +57,43 @@ export const savePhotoSuccess = (photos) => ({photos, type: SAVE_PHOTO_SUCCESS})
 export const getUserProfile = (userId) => {
     return async (dispatch) => {
         let data = await profileApi.getUser(userId)
-            dispatch(setUserProfile(data))
+        dispatch(setUserProfile(data))
     }
 }
 export const getStatus = (userId) => {
     return async (dispatch) => {
-       let data = await profileApi.getStatus(userId)
-            dispatch(setStatus(data))
+        let data = await profileApi.getStatus(userId)
+        dispatch(setStatus(data))
     }
 }
 export const updateStatus = (status) => {
     return async (dispatch) => {
-       let data = await profileApi.updateStatus(status)
-            if (data.resultCode === 0) {
-                dispatch(setStatus(status))
-            }
+        let data = await profileApi.updateStatus(status)
+        if (data.resultCode === 0) {
+            dispatch(setStatus(status))
+        }
     }
 }
 export const savePhoto = (file) => {
     return async (dispatch) => {
-       let data = await profileApi.savePhoto(file)
-            if (data.resultCode === 0) {
-                dispatch(savePhotoSuccess(data.data.photos))
-            }
+        let data = await profileApi.savePhoto(file)
+        if (data.resultCode === 0) {
+            dispatch(savePhotoSuccess(data.data.photos))
+        }
+    }
+}
+export const saveProfile = (profile) => {
+    return async (dispatch, getState) => {
+        const userId = getState().auth.userId;
+        let data = await profileApi.saveProfile(profile)
+        if (data.resultCode === 0) {
+            dispatch(getUserProfile(userId))
+        }
+        else{
+            // debugger
+            dispatch(stopSubmit('editProfile', {_error: data.messages[0]}));
+            return Promise.reject(data.messages[0])
+        }
     }
 }
 

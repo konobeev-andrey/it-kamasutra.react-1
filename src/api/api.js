@@ -37,6 +37,9 @@ export const profileApi = {
                     'Content-type': 'multipart/form-data'
             }
         }).then(resp => resp.data)
+    },
+    saveProfile(profile){
+        return  instansce.put(`profile`, profile).then(resp => resp.data)
     }
 }
 export const authApi = {
